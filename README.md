@@ -1,113 +1,115 @@
-# 🕵️ Domain Info Scanner (Kali Linux)
+# 🕵️ Domain Info Scanner - Kali Linux
 
-A Bash script for Kali Linux that performs domain reconnaissance by pulling WHOIS records, DNS information, and IP geolocation details using the ipinfo.io API.
+A Bash script for Kali Linux that collects WHOIS, DNS, and IP metadata for any domain using Linux-native tools and the [ipinfo.io](https://ipinfo.io/) API. It outputs a clean report with hosting provider, registrar, and abuse contact details.
 
 ---
 
-## 🌐 What It Does
+## 📦 Features
 
-- Normalizes domain input (removes protocols and www)
-- Validates domain format
-- Retrieves WHOIS data:
-  - Registrar
-  - Registrar Abuse Contact
-  - Domain Creation Date
-- Resolves domain A record to IP
-- Queries [ipinfo.io](https://ipinfo.io/) to get:
-  - Hosting Provider (ORG)
+- Cleans and validates domain input
+- Retrieves WHOIS data (registrar, creation date, abuse contact)
+- Resolves the A record to an IP
+- Uses ipinfo.io to retrieve:
+  - Hosting provider
   - ASN
-  - Abuse Contact for IP
-- Saves results to a timestamped text file
-- Copies that file to a standard analysis folder:  
-  `/home/kali/Website analysis/`
+  - Abuse contact for the IP
+- Saves results to a timestamped `.txt` file
+- Automatically copies the file to `/home/kali/Website analysis/`
 
 ---
 
-## 🔐 API Key Requirement
+## 🛠️ Requirements
 
-This script **requires a free API key from ipinfo.io** to work properly.
-
-### Steps to Get Your Key:
-1. Go to [https://ipinfo.io/signup](https://ipinfo.io/signup)
-2. Create a free account
-3. Once logged in, copy your **Access Token**
-
-### How to Set Your API Key:
-1. Open the script:
-
-    ```bash
-    nano domain-info.sh
-    ```
-
-2. Find the line:
-
-    ```bash
-    API_KEY="PASTE_YOUR_API_KEY_HERE"
-    ```
-
-3. Replace it with:
-
-    ```bash
-    API_KEY="your_actual_key_here"
-    ```
-
-4. Save and exit:
-    - In nano: `CTRL + O`, `Enter`, `CTRL + X`
-
----
-
-## 📦 Requirements
-
-This script is built for **Kali Linux** and uses tools commonly preinstalled. If missing, install them with:
+Tested on Kali Linux. You must have these tools installed:
 
 ```bash
 sudo apt update
 sudo apt install whois dnsutils curl jq
+```
 
-## ⚙️ Installation
-Clone this repository:
+---
 
-bash
-Copy
-Edit
-git clone https://github.com/YOUR_USERNAME/domain-info-scanner.git
-cd domain-info-scanner
+## 🔐 API Key Setup (Required)
+
+This script uses ipinfo.io to query IP address metadata, such as the hosting provider and abuse contact.
+
+### Step 1: Get a Free API Key
+
+- Go to: https://ipinfo.io/signup  
+- Create a free account  
+- Copy your Access Token (API Key) from the dashboard  
+
+### Step 2: Paste It Into the Script
+
+Open the script file:
+
+```bash
+nano domain-info.sh
+```
+
+At the top of the file, find this line:
+
+```bash
+API_KEY="PASTE_YOUR_API_KEY_HERE"
+```
+
+Replace it with your actual key:
+
+```bash
+API_KEY="your_actual_key_here"
+```
+
+Save and close (`CTRL + O`, `Enter`, then `CTRL + X`)
+
+> ⚠️ If you forget to add your key, the script will exit and warn you.
+
+---
+
+## 🚀 How to Use
+
+Make the script executable:
+
+```bash
 chmod +x domain-info.sh
-🚀 Usage
-Run the script:
+```
 
-bash
-Copy
-Edit
+Run it:
+
+```bash
 ./domain-info.sh
-You'll be prompted:
+```
 
-pgsql
-Copy
-Edit
-Enter the domain to search (e.g., example.com):
+When prompted, enter a domain (e.g., `example.com`).
+
 The script will:
 
-Run WHOIS and DNS checks
+- Normalize the domain
+- Pull WHOIS and DNS info
+- Query ipinfo.io for IP ownership
+- Output all data to a `.txt` file
+- Copy it to your analysis folder
 
-Query ipinfo.io using your key
+---
 
-Save results to <domain>_YYYYMMDD_HHMMSS.txt
+## ⚙️ Optional Flags
 
-Copy the file to: /home/kali/Website analysis/
+- `-o filename.txt` – Save output to a custom file  
+- `-h` – Display help menu
 
-Optional: Save with a custom filename
-bash
-Copy
-Edit
-./domain-info.sh -o myresults.txt
-📁 Output Example
-yaml
-Copy
-Edit
+**Example:**
+
+```bash
+./domain-info.sh -o report.txt
+```
+
+---
+
+## 📁 Output Example
+
+```
 📄 Info for example.com
 Generated: 2025-06-10 13:00:00 PDT
-========================
+=========================
 Registrar: NameCheap, Inc.
 Abuse Contact for Registrar: abuse@namecheap.com
 Domain Created: 2020-01-15
@@ -115,45 +117,57 @@ IP Address: 93.184.216.34
 Hosting Provider: EDGECAST
 ASN: AS15133
 Abuse Contact for Host: abuse@verizon.com
-Saved as:
+```
 
-Copy
-Edit
+**This is saved as:**
+
+```
 example_com_20250610_130000.txt
-Copied to:
+```
 
-bash
-Copy
-Edit
+**And copied to:**
+
+```
 /home/kali/Website analysis/completed_example_com_20250610_130000.txt
-🧯 Troubleshooting
-Script exits immediately saying API key is missing?
-You must paste your ipinfo.io API key directly into the script.
+```
 
-No IP address found?
-The domain may not have an A record. Try a different one.
+---
 
-Missing commands?
-Run:
-sudo apt install whois dnsutils curl jq
+## 🧯 Troubleshooting
 
-Getting errors from ipinfo?
+| Issue                         | Solution                                                    |
+|------------------------------|-------------------------------------------------------------|
+| Script says API key is missing | Open the script and paste your key at the top              |
+| Missing tools (whois, dig)   | Run: `sudo apt install whois dnsutils curl jq`             |
+| Domain doesn’t resolve       | Try another domain — it may lack an A record               |
+| ipinfo.io fails              | Your key may be invalid or you've hit the rate limit       |
 
-Check if your API key is correct
+---
 
-Your IP may have hit a rate limit (wait or upgrade your plan)
+## 📂 File Structure
 
-📂 File Structure
-pgsql
-Copy
-Edit
-domain-info-scanner/
-├── domain-info.sh        # Main script
-└── README.md             # You're reading it
-📄 License
-This project is licensed under the MIT License.
+```
+.
+├── domain-info.sh       # Main script (edit this to add API key)
+└── README.md            # You're reading it
+```
 
-You are free to use, modify, and share this script with attribution.
+---
 
-🙋 Support
-If you encounter bugs or have ideas to improve the script, feel free to open an issue.
+## 📜 License
+
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and distribute it with proper credit.
+
+---
+
+## 🙋 Author
+
+Created by **scamtopus**  
+For ethical cybersecurity, awareness, and investigative education.
+
+---
+
+## 🙋 Support
+
+If you encounter bugs or have ideas to improve the script, feel free to [open an issue](https://github.com/scamtopus/-Domain-Info-Scanner-Kali-Linux-/issues).
