@@ -154,13 +154,6 @@ example_com_20250610_130000.txt
 
 ---
 
-## 📜 License
-
-This project is licensed under the **MIT License**.  
-You are free to use, modify, and distribute it with proper credit.
-
----
-
 ## 🙋 Author
 
 Created by **scamtopus**  
