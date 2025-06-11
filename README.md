@@ -154,13 +154,12 @@ example_com_20250610_130000.txt
 
 ---
 
-## 🙋 Author
-
-Created by **scamtopus**  
-For ethical cybersecurity, awareness, and investigative education.
-
----
-
 ## 🙋 Support
 
 If you encounter bugs or have ideas to improve the script, feel free to [open an issue](https://github.com/scamtopus/-Domain-Info-Scanner-Kali-Linux-/issues).
+
+---
+
+## 🙋 Author
+
+Created by **scamtopus** For ethical cybersecurity, awareness, and investigative education.
